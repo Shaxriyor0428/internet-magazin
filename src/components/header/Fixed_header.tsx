@@ -38,7 +38,7 @@ const FixedHeader = () => {
           </div>
           <div
             onClick={() => changeLang("uz")}
-            className={`flex flex-col items-center cursor-pointer p-[6px] ${
+            className={`flex flex-col select-none items-center cursor-pointer p-[6px] ${
               lang === "uz" ? "bg-gray-100 rounded-md " : ""
             }`}
           >
@@ -47,7 +47,7 @@ const FixedHeader = () => {
           </div>
           <div
             onClick={() => changeLang("ru")}
-            className={`flex flex-col items-center cursor-pointer gap-1 p-[6px] ${
+            className={`flex flex-col select-none items-center cursor-pointer gap-1 p-[6px] ${
               lang === "ru" ? "bg-gray-100 rounded-md" : ""
             }`}
           >

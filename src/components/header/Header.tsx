@@ -13,7 +13,7 @@ const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
-    <>
+    <div className="sticky top-0 left-0 z-50 bg-white w-full">
       <SectionOne />
       <section className=" py-2 border-b">
         <ul className="flex gap-5 justify-between items-center container">
@@ -142,7 +142,7 @@ const Header = () => {
           </div>
         </ul>
       </section>
-    </>
+    </div>
   );
 };
 
