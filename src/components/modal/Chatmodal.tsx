@@ -7,8 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { setMessages, setChatUsername } from "../../redux/features/chat-data";
 
-// const socket = io("http://167.71.195.218:3004");
-const socket = io("http://localhost:3004");
+const socket = io(import.meta.env.VITE_BASE_URL);
 const ChatModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -20,23 +19,24 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
   const storedMessages = useSelector((state: RootState) => state.chat.messages);
 
   useEffect(() => {
+    const chatContainer = document.getElementById("chatMessages");
+    if (chatContainer) {
+      setTimeout(() => {
+        chatContainer.scrollTo({
+          behavior: "smooth",
+          top: chatContainer.scrollHeight,
+        });
+      }, 100);
+    }
+  }, [storedMessages]);
+
+  useEffect(() => {
     const handleClientReply = (adminMessage: string) => {
       // console.log(adminMessage);
       dispatch(setMessages({ sender: "admin", message: adminMessage }));
     };
 
     socket.on("clientReply", handleClientReply);
-
-    setTimeout(() => {
-      const chatContainer = document.getElementById("chatMessages");
-      if (chatContainer) {
-        chatContainer.scrollTo({
-          behavior: "smooth",
-          top: chatContainer.scrollHeight,
-        });
-      }
-    }, 100);
-
     return () => {
       socket.off("clientReply", handleClientReply);
     };
@@ -60,7 +60,7 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="fixed bottom-0 right-6 z-50">
+    <div id="chatMessages" className="fixed bottom-0 right-6 z-50">
       <div className="bg-white shadow-lg w-[320px] h-[420px] rounded-lg flex flex-col">
         {!username ? (
           <div className="p-4 bg-gray-200 flex flex-col items-center justify-center h-full">
