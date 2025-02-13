@@ -115,5 +115,7 @@ export const translationRu = {
   },
   chat: {
     input_pl: "Введите сообщение",
+    enter_name: "Введите имя",
+    enter_btn: "Войти",
   },
 };
