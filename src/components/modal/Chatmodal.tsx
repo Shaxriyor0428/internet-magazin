@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { setMessages, setChatUsername } from "../../redux/features/chat-data";
 
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:3002");
 
 const ChatModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
 
   useEffect(() => {
     const handleClientReply = (adminMessage: string) => {
-      console.log(adminMessage);
+      // console.log(adminMessage);
       dispatch(setMessages({ sender: "admin", message: adminMessage }));
     };
 
