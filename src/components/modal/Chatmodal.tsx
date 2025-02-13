@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { setMessages, setChatUsername } from "../../redux/features/chat-data";
 
-const socket = io(import.meta.env.VITE_BASE_URL);
+const socket = io("http://167.71.195.218:3004");
+// const socket = io(import.meta.env.VITE_BASE_URL);
 const ChatModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
