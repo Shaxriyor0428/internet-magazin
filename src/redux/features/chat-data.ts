@@ -6,31 +6,33 @@ interface ChatState {
 }
 
 const initialState: ChatState = {
-  username: "",
-  messages: [],
+  username: localStorage.getItem("chatUsername") || "",
+  messages: JSON.parse(localStorage.getItem("chatMessages") || "[]"),
 };
 
 const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setUsername(state, action: PayloadAction<string>) {
+    setChatUsername(state, action: PayloadAction<string>) {
       state.username = action.payload;
-    },
-    addMessage(
-      state,
-      action: PayloadAction<{ sender: string; message: string }>
-    ) {
-      state.messages.push(action.payload);
+      localStorage.setItem("chatUsername", state.username);
     },
     setMessages(
       state,
-      action: PayloadAction<{ sender: string; message: string }[]>
+      action: PayloadAction<
+        | { sender: string; message: string }
+        | { sender: string; message: string }[]
+      >
     ) {
-      state.messages = action.payload;
+      const newMessages = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+      state.messages = [...state.messages, ...newMessages];
+      localStorage.setItem("chatMessages", JSON.stringify(state.messages));
     },
   },
 });
 
-export const { setUsername, addMessage, setMessages } = chatSlice.actions;
+export const { setChatUsername, setMessages } = chatSlice.actions;
 export default chatSlice.reducer;

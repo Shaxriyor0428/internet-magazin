@@ -3,65 +3,56 @@ import { MdClose } from "react-icons/md";
 import { IoSend } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { io } from "socket.io-client";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux";
+import { setMessages, setChatUsername } from "../../redux/features/chat-data";
+
+const socket = io("http://localhost:5000");
 
 const ChatModal = ({ onClose }: { onClose: () => void }) => {
-  const socket = io("http://localhost:5000");
   const { t } = useTranslation();
-
-  const [username, setUsername] = useState<string>("");
-  const [isUsernameSet, setIsUsernameSet] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const { username } = useSelector((state: RootState) => state.chat);
   const [message, setMessage] = useState<string>("");
-  const [messages, setMessages] = useState<
-    { sender: string; message: string }[]
-  >([]);
+  const [name, setName] = useState("");
+
+  const storedUsername = useSelector((state: RootState) => state.chat.username);
+  const storedMessages = useSelector((state: RootState) => state.chat.messages);
 
   useEffect(() => {
-    const storedMessages = localStorage.getItem("chatMessages");
-    const storedUsername = localStorage.getItem("chatUsername");
+    const handleClientReply = (adminMessage: string) => {
+      console.log(adminMessage);
+      dispatch(setMessages({ sender: "admin", message: adminMessage }));
+    };
 
-    if (storedMessages) {
-      setMessages(JSON.parse(storedMessages));
-    }
-    if (storedUsername) {
-      setUsername(storedUsername);
-      setIsUsernameSet(true);
-      socket.emit("join", storedUsername); 
-    }
-  }, []);
+    socket.on("clientReply", handleClientReply);
 
-    socket.on("clientReply", (adminMessage) => {
-      const newMessages = [
-        ...messages,
-        { sender: "admin", message: adminMessage },
-      ];
-      setMessages(newMessages);
-      localStorage.setItem("chatMessages", JSON.stringify(newMessages));
-    });
-
-
+    return () => {
+      socket.off("clientReply", handleClientReply);
+    };
+  }, [dispatch]);
 
   const sendMessage = () => {
     if (message.trim() === "") return;
 
-    const newMessages = [...messages, { sender: "client", message }];
-    setMessages(newMessages);
-    localStorage.setItem("chatMessages", JSON.stringify(newMessages));
-
-    socket.emit("sendMessage", { username, message }); 
+    const newMessage = { sender: "client", message };
+    dispatch(setMessages(newMessage));
+    socket.emit("sendMessage", { username, message });
     setMessage("");
   };
 
   const handleUsernameSubmit = () => {
-    if (username.trim() === "") return;
-    localStorage.setItem("chatUsername", username);
-    setIsUsernameSet(true);
-    socket.emit("join", username);
+    if (name.trim() === "") return;
+    dispatch(setChatUsername(name));
+    if (!storedUsername) {
+      socket.emit("join", name);
+    }
   };
 
   return (
     <div className="fixed bottom-0 right-6 z-50">
       <div className="bg-white shadow-lg w-[320px] h-[420px] rounded-lg flex flex-col">
-        {!isUsernameSet ? (
+        {!username ? (
           <div className="p-4 bg-gray-200 flex flex-col items-center justify-center h-full">
             <h2 className="text-lg font-semibold mb-4">
               {t("chat.enter_name")}
@@ -70,8 +61,8 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
               type="text"
               placeholder={t("chat.enter_name")}
               className="w-full p-2 border rounded-lg outline-none mb-2"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <button
               onClick={handleUsernameSubmit}
@@ -88,8 +79,8 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
                 <MdClose size={24} />
               </button>
             </div>
-            <div className="flex-1 p-4 overflow-y-auto">
-              {messages.map((msg, index) => (
+            <div className={`flex-1  p-2 overflow-y-auto`}>
+              {storedMessages.map((msg, index) => (
                 <div
                   key={index}
                   className={`${
@@ -99,8 +90,8 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
                   <div
                     className={`${
                       msg.sender === "client"
-                        ? "bg-green-500 text-white"
-                        : "bg-white text-black"
+                        ? "bg-green-500 text-white text-start"
+                        : "bg-gray-200 text-black"
                     } p-2 rounded-lg inline-block max-w-[70%]`}
                   >
                     {msg.message}
