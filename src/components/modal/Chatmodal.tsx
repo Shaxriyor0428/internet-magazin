@@ -27,6 +27,16 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
 
     socket.on("clientReply", handleClientReply);
 
+    setTimeout(() => {
+      const chatContainer = document.getElementById("chatMessages");
+      if (chatContainer) {
+        chatContainer.scrollTo({
+          behavior: "smooth",
+          top: chatContainer.scrollHeight,
+        });
+      }
+    }, 100);
+
     return () => {
       socket.off("clientReply", handleClientReply);
     };
