@@ -65,7 +65,6 @@ const FixedHeader = () => {
             </button>
             {isChatOpen && (
               <ChatModal
-                isOpen={isChatOpen}
                 onClose={() => setIsChatOpen(false)}
               />
             )}
