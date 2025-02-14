@@ -6,6 +6,7 @@ import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux";
 import { setMessages, setChatUsername } from "../../redux/features/chat-data";
+import { FaRegUser } from "react-icons/fa";
 
 const socket = io(import.meta.env.VITE_BASE_URL);
 
@@ -59,24 +60,33 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
+  const handleMessageClick = (msg: string) => {
+    setMessage(msg);
+  };
   return (
     <div className="fixed bottom-0 right-6 z-50">
       <div className="bg-white shadow-2xl w-80 h-[500px] rounded-xl flex flex-col overflow-hidden border border-gray-200">
         {!username ? (
-          <div className="p-6 flex flex-col items-center justify-center h-full">
-            <h2 className="text-lg font-semibold mb-4 text-gray-700 text-center">
+          <div className="p-6 flex flex-col items-center justify-center h-full bg-white rounded-xl shadow-xl">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">
               {t("chat.enter_name")}
             </h2>
-            <input
-              type="text"
-              placeholder={t("chat.enter_input")}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+
+            <div className="relative w-full">
+              <input
+                type="text"
+                required
+                placeholder={t("chat.enter_input")}
+                className="w-full p-3 pl-10 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-4 focus:ring-purple-400 transition-all text-gray-700"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <FaRegUser className="absolute left-3 top-[50%] translate-y-[-50%] w-5 h-5 text-gray-400" />
+            </div>
+
             <button
               onClick={handleUsernameSubmit}
-              className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-all"
+              className="mt-6 w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
             >
               {t("chat.enter_btn")}
             </button>
@@ -97,43 +107,22 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
               className="flex-1 p-2 overflow-y-auto bg-gray-100"
             >
               {storedMessages.length === 0 ? (
-                <div className="flex justify-end flex-col gap-3 items-end h-full">
+                <div className="flex justify-end flex-col gap-2 items-end h-full">
                   <p
-                    onClick={() =>
-                      dispatch(
-                        setMessages({
-                          sender: "client",
-                          message: t("chat.advice1"),
-                        })
-                      )
-                    }
+                    onClick={() => handleMessageClick(t("chat.advice1"))}
                     className="rounded-full py-1 px-4 text-green-500 border border-green-500 cursor-pointer hover:bg-green-500 hover:text-white duration-300 transition-all"
                   >
                     {t("chat.advice1")}
                   </p>
 
                   <p
-                    onClick={() =>
-                      dispatch(
-                        setMessages({
-                          sender: "client",
-                          message: t("chat.advice2"),
-                        })
-                      )
-                    }
-                    className=" rounded-full py-1  px-4 text-green-500 border border-green-500 cursor-pointer hover:bg-green-500 hover:text-white duration-300 transition-all"
+                    onClick={() => handleMessageClick(t("chat.advice2"))}
+                    className=" rounded-full py-1 px-4 text-green-500 border border-green-500 cursor-pointer hover:bg-green-500 hover:text-white duration-300 transition-all"
                   >
                     {t("chat.advice2")}
                   </p>
                   <p
-                    onClick={() =>
-                      dispatch(
-                        setMessages({
-                          sender: "client",
-                          message: t("chat.advice3"),
-                        })
-                      )
-                    }
+                    onClick={() => handleMessageClick(t("chat.advice3"))}
                     className=" rounded-full py-1  px-4 text-green-500 border border-green-500 cursor-pointer hover:bg-green-500 hover:text-white duration-300 transition-all"
                   >
                     {t("chat.advice3")}
@@ -148,7 +137,7 @@ const ChatModal = ({ onClose }: { onClose: () => void }) => {
                     } mb-2`}
                   >
                     <div
-                      className={`p-2 rounded-lg max-w-[75%] text-sm ${
+                      className={`p-2 rounded-lg max-w-[75%]  ${
                         msg.sender === "client"
                           ? "bg-blue-500 text-white text-left"
                           : "bg-gray-200 text-gray-900"
