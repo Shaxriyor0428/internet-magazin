@@ -7,7 +7,7 @@ import { BsCart2 } from "react-icons/bs";
 import { IoMenu } from "react-icons/io5";
 import country_image from "../../assets/images/country_image.png";
 import { IoIosArrowDown } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -94,10 +94,12 @@ const Header = () => {
             </svg>
             <p>{t("header.nav.compare")}</p>
           </li>
-          <li className="flex flex-col justify-center items-center cursor-pointer">
-            <FaRegUser className="text-gray-700" />
-            <p>{t("header.nav.profile")}</p>
-          </li>
+          <Link to={"/login"}>
+            <li className="flex flex-col justify-center items-center cursor-pointer">
+              <FaRegUser className="text-gray-700" />
+              <p>{t("header.nav.profile")}</p>
+            </li>
+          </Link>
           <li className="flex flex-col justify-center items-center cursor-pointer">
             <BsCart2 className="text-gray-800" />
             <p>{t("header.nav.cart")}</p>
