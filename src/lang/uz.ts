@@ -115,7 +115,9 @@ export const translationUz = {
   },
   chat: {
     input_pl: "Xabar kiriting",
-    enter_name: "Ismingizni kiriting",
+    enter_name: "Muloqotni boshlash uchun ismingizni kiriting",
+    enter_input:"Ismingizni kiriting",
     enter_btn:"Kirish"
+
   },
 };
