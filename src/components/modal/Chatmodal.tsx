@@ -8,11 +8,16 @@ import { RootState } from "../../redux";
 import { setMessages, setChatUsername } from "../../redux/features/chat-data";
 import { FaRegUser } from "react-icons/fa";
 
-const socket = io("http://90.156.169.122:3003");
+const socket = io("wss://shaxriyorbek.uz", {
+  path: "/socket.io/",
+  transports: ["websocket", "polling"],
+});
 
 const ChatModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  console.log(socket);
+  
   const { username } = useSelector((state: RootState) => state.chat);
   const [message, setMessage] = useState<string>("");
   const [name, setName] = useState("");
