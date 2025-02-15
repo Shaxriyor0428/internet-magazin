@@ -8,7 +8,7 @@ import { RootState } from "../../redux";
 import { setMessages, setChatUsername } from "../../redux/features/chat-data";
 import { FaRegUser } from "react-icons/fa";
 
-const socket = io(import.meta.env.VITE_BASE_URL);
+const socket = io("http://90.156.169.122:3004");
 
 const ChatModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
