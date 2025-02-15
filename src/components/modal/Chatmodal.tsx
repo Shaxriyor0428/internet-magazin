@@ -16,7 +16,7 @@ const socket = io("wss://shaxriyorbek.uz", {
 const ChatModal = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  console.log(socket);
+  // console.log(socket);
   
   const { username } = useSelector((state: RootState) => state.chat);
   const [message, setMessage] = useState<string>("");

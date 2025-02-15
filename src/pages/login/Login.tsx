@@ -3,16 +3,16 @@ import { useSearchParams } from "react-router-dom";
 
 const Login = () => {
   const handleGoogleLogin = () => {
-    window.location.href = "http://90.156.169.122:3003/auth/google/login";
+    window.location.href = "https://shaxriyorbek.uz/auth/google/login";
   };
 
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   useEffect(() => {
-    console.log(token, "KELDI");
+    // console.log(token, "KELDI");
     if (token) {
       localStorage.setItem("accessToken", token);
-      window.location.href = "http://90.156.169.122:5173";
+      window.location.href = "http://localhost:5173";
     }
   }, []);
 
