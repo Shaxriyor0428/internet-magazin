@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 
 const Login = () => {
@@ -12,6 +13,9 @@ const Login = () => {
     // console.log(token, "KELDI");
     if (token) {
       localStorage.setItem("accessToken", token);
+      toast.success("Siz ro'yxatdan muvaffaqiyatli o'tdingiz! ", {
+        position: "top-right",
+      });
       window.location.href = "https://internet-magazin-mu.vercel.app";
     }
   }, []);
