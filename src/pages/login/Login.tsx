@@ -12,7 +12,7 @@ const Login = () => {
     // console.log(token, "KELDI");
     if (token) {
       localStorage.setItem("accessToken", token);
-      window.location.href = "http://localhost:5173";
+      window.location.href = "https://internet-magazin-mu.vercel.app";
     }
   }, []);
 
