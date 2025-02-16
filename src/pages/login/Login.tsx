@@ -12,7 +12,7 @@ const Login = () => {
       toast.success("Siz ro'yxatdan muvaffaqiyatli o'tdingiz! ", {
         position: "top-right",
       });
-      window.location.href = "http://localhost:5173";
+      window.location.href = "https://internet-magazin-mu.vercel.app";
     }
   }, [token]);
 
