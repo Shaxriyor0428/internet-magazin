@@ -11,7 +11,7 @@ const SectionOne = () => {
   }, []);
 
   return (
-    <div className="bg-primary h-10 text-center grid place-items-center">
+    <div className="bg-primary min-h-10 text-center grid place-items-center">
       <p className="text-white cursor-pointer">
         {t("header.sectionOne.title")}{" "}
         <span className="underline">{t("header.sectionOne.title2")}</span>
